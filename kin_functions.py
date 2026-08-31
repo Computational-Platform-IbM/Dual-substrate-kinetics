@@ -59,7 +59,7 @@ def fit_kinetics(q_s_max, K_eD1_spec, Y_S_AN_tot, Y_S_CAT_tot, q_s_cat_max, mu_m
     initial_guess = [100*10**(-2)]
 
     # fit the model
-    popt, _ = curve_fit(qs_fit_on_cat, all_eD1_conc_M , q_S, p0 = initial_guess)
+    popt, _ = curve_fit(qs_fit_on_cat, all_eD1_conc_M , q_S, p0 = initial_guess, bounds=(0, np.inf))
     Ke_fit = popt[0]
 
     # calculate the substrate consumption rate using the fitted affinity constant
@@ -85,7 +85,7 @@ def fit_kinetics(q_s_max, K_eD1_spec, Y_S_AN_tot, Y_S_CAT_tot, q_s_cat_max, mu_m
         return q_s_an_max * (CeD1 / (CeD1 + Kc )) + q_s_cat_max * (CeD1 / (CeD1 + Ke_fit )) 
 
     # fit the model again against regular Monod (q_S)
-    popt, pcov = curve_fit(qs_fit_on_an, all_eD1_conc_M , q_S, p0 = initial_guess)
+    popt, pcov = curve_fit(qs_fit_on_an, all_eD1_conc_M , q_S, p0 = initial_guess, bounds=(0, np.inf))
     Kc_fit = popt[0]
 
     # catabolism and anabolism separately
@@ -138,7 +138,7 @@ def fit_gen_to_spec(Ke_fit, Kc_fit, NoE_eD1, NoE_eD2, eD1_name, eD2_name, f_eD1,
     initial_guess = [100*10**(-6)]
 
     # fit the model
-    popt, pcov = curve_fit(fit_Ketot_dual_cat, e_tot, q_e_cat_spec, p0 = initial_guess)
+    popt, pcov = curve_fit(fit_Ketot_dual_cat, e_tot, q_e_cat_spec, p0 = initial_guess, bounds=(0, np.inf))
     Ke_tot_fit = popt[0]
 
     # get values
